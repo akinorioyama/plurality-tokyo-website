@@ -59,7 +59,7 @@ Events の本文をここに記述...
 
 - Next.js 14
 - TypeScript
-- Tailwind CSS
+- Tailwind CSS（プリフライトやリンク装飾のカスタマイズあり。詳細は `app/globals.css` および `tailwind.config.ts` を参照）
 - shadcn/ui
 - マークダウン（MDX）コンテンツ
 
@@ -107,6 +107,8 @@ title: 記事タイトル
 date: 2023-01-01
 excerpt: 記事の要約
 tags: [tag1, tag2]
+author: 著者名
+coverImage: /images/articles/記事画像ファイル名.png
 ---
 
 ここに本文を書きます。マークダウン形式で記述できます。
@@ -115,8 +117,28 @@ tags: [tag1, tag2]
 ## SEO 設定
 
 - メタデータは`lib/metadata.ts`で管理
-- OpenGraph 設定を含む
-- サイトマップは自動生成
+  - 多言語対応（日本語・英語）のメタデータを提供
+  - `getMetadata(locale)` 関数で現在のロケールに基づいたメタデータを生成
+- OpenGraph 設定を含む（ロケールに応じて自動的に調整）
+- JSON-LD 構造化データを実装（`lib/schema.ts`）
+  - Organization, Event, Article, BreadcrumbList スキーマをサポート
+  - 検索エンジンの理解度向上のための構造化データ
+- サイトマップは自動生成（`public/sitemap.xml`）
+  - 多言語対応のhreflang属性を含む
+- robots.txt ファイルを提供（`public/robots.txt`）
+
+### SEO Configuration
+
+- Metadata is managed in `lib/metadata.ts`
+  - Provides multilingual metadata (Japanese and English)
+  - `getMetadata(locale)` function generates metadata based on current locale
+- Includes OpenGraph settings (automatically adjusted based on locale)
+- JSON-LD structured data implemented (`lib/schema.ts`)
+  - Supports Organization, Event, Article, and BreadcrumbList schemas
+  - Structured data for better search engine understanding
+- Sitemap is automatically generated (`public/sitemap.xml`)
+  - Includes hreflang attributes for multilingual support
+- Provides robots.txt file (`public/robots.txt`)
 
 ## 開発ルール
 
@@ -220,6 +242,9 @@ social:
 ![画像の説明](/images/filename.jpg)
 ```
 
+3. 記事画像は `/public/images/articles/` に保存し、ファイル名は記事のスラッグやタイトルに合わせて命名してください（例: `CryptoBridgeFtC.png`）。
+4. スピーカー画像は `/public/images/speakers/` に保存し、ファイル名はスピーカー名（英語表記、ハイフン区切り）で命名してください（例: `shinya-mori.png`）。
+
 ### コンテンツのプレビュー
 
 1. 開発サーバーを起動します：
@@ -241,6 +266,10 @@ git push
 ```
 
 2. Vercel が自動的にデプロイを行い、変更が反映されます。
+
+## コントリビューション
+
+このプロジェクトに貢献する方法については、[コントリビューションガイド](CONTRIBUTING.md)を参照してください。
 
 ## LLMs.txt Support
 
